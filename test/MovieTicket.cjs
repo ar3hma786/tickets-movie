@@ -5,11 +5,11 @@ const NAME = "MovieTicket";
 const SYMBOL = "MTK";
 
 const OCCASION_NAME = "ETH Dubai";
-const OCCASION_COST = ethers.parseUnits('0.015', 'ether');
+const OCCASION_COST = ethers.parseEther('0.015');
 const OCCASION_MAX_TICKETS = 10000;
-const OCCASION_DATE = "May 18";
-const OCCASION_TIME = "10:00AM GST";
-const OCCASION_LOCATION = "Al Barsha, Dubai";
+const OCCASION_DATES = ["May 18", "May 19", "May 20"];
+const OCCASION_TIMES = ["10:00AM GST", "1:00PM GST", "4:00PM GST"];
+const OCCASION_LOCATIONS = ["Al Barsha, Dubai", "Downtown Dubai", "Jumeirah Beach"];
 
 describe("MovieTicket", function () {
   let movieTicket;
@@ -17,30 +17,18 @@ describe("MovieTicket", function () {
   let buyer;
 
   beforeEach(async function () {
-    // Get signers
     [deployer, buyer] = await ethers.getSigners();
 
-    // Deploy the contract
     const MovieTicketFactory = await ethers.getContractFactory("MovieTicket");
     movieTicket = await MovieTicketFactory.deploy(NAME, SYMBOL);
 
-    // Wait for the contract to be deployed
-     // Wait for deployment transaction to be mined
-     const deploymentTx = movieTicket.deploymentTransaction();
-     if (deploymentTx) {
-         await deploymentTx.wait();
-     } else {
-         throw new Error("Deployment transaction is null");
-     }
-
-    // List a movie occasion
-    await movieTicket.connect(deployer).list(
+    await movieTicket.list(
       OCCASION_NAME,
       OCCASION_COST,
       OCCASION_MAX_TICKETS,
-      OCCASION_DATE,
-      OCCASION_TIME,
-      OCCASION_LOCATION
+      OCCASION_DATES,
+      OCCASION_TIMES,
+      OCCASION_LOCATIONS
     );
   });
 
@@ -65,16 +53,16 @@ describe("MovieTicket", function () {
       expect(occasion.name).to.equal(OCCASION_NAME);
       expect(occasion.cost).to.equal(OCCASION_COST);
       expect(occasion.tickets).to.equal(OCCASION_MAX_TICKETS);
-      expect(occasion.date).to.equal(OCCASION_DATE);
-      expect(occasion.time).to.equal(OCCASION_TIME);
-      expect(occasion.location).to.equal(OCCASION_LOCATION);
+      expect(occasion.dates).to.deep.equal(OCCASION_DATES);
+      expect(occasion.times).to.deep.equal(OCCASION_TIMES);
+      expect(occasion.locations).to.deep.equal(OCCASION_LOCATIONS);
     });
   });
 
   describe("Minting", () => {
     const ID = 1;
     const SEAT = 50;
-    const AMOUNT = ethers.parseUnits('0.015', 'ether');
+    const AMOUNT = ethers.parseEther('0.015');
 
     beforeEach(async () => {
       const transaction = await movieTicket.connect(buyer).mint(ID, SEAT, { value: AMOUNT });
@@ -111,7 +99,7 @@ describe("MovieTicket", function () {
   describe("Withdrawing", () => {
     const ID = 1;
     const SEAT = 50;
-    const AMOUNT = ethers.parseUnits("0.015", 'ether');
+    const AMOUNT = ethers.parseEther('0.015');
     let balanceBefore;
 
     beforeEach(async () => {

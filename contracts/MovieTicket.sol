@@ -14,9 +14,9 @@ contract MovieTicket is ERC721 {
         uint256 cost;
         uint256 tickets;
         uint256 maxTickets;
-        string date;
-        string time;
-        string location;
+        string[] dates;
+        string[] times;
+        string[] locations;
     }
 
     mapping(uint256 => Occasion) public occasions;
@@ -37,12 +37,16 @@ contract MovieTicket is ERC721 {
         string memory _name,
         uint256 _cost,
         uint256 _tickets,
-        string memory _date,
-        string memory _time,
-        string memory _location
+        string[] memory _dates,
+        string[] memory _times,
+        string[] memory _locations
     ) public isOwner {
         require(_tickets > 0, "Tickets should be more than 0");
-        
+        require(
+            _dates.length == _times.length && _dates.length == _locations.length,
+            "Dates, times, and locations array lengths should match"
+        );
+
         occasionsCount++;
         occasions[occasionsCount] = Occasion(
             occasionsCount,
@@ -50,9 +54,9 @@ contract MovieTicket is ERC721 {
             _cost,
             _tickets,
             _tickets, // maxTickets is the initial number of tickets
-            _date,
-            _time,
-            _location
+            _dates,
+            _times,
+            _locations
         );
     }
 
