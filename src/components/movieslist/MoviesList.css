@@ -1,0 +1,56 @@
+/* MoviesList.css */
+.movieslist {
+    padding: 50px;
+    background-color: #262729;
+    color: #ccc;
+}
+
+.titlecolor {
+    color: #ccc;
+}
+
+.cateogrycolor {
+    color: #797979;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+}
+
+.product--image {
+    width: 80%;
+    height: auto;
+    border-radius: 15px;
+}
+
+/* Add this CSS to position the arrow buttons */
+.custom-dot {
+    bottom: 20px;
+}
+
+.carousel-container {
+    position: relative;
+}
+
+.react-multiple-carousel__arrow {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+}
+
+.react-multiple-carousel__arrow--left {
+    left: -5px;
+    /* Adjust this value to set the left position */
+}
+
+.react-multiple-carousel__arrow--right {
+    right: 5px;
+    /* Adjust this value to set the right position */
+}
+
+.movielink {
+    color: black;
+    text-decoration: none;
+}
